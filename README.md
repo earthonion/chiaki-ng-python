@@ -44,11 +44,15 @@ python3 examples/controller_script.py examples/example_script.txt PS4-910
 ## Installation
 
 ```bash
-# Clone the repository
-cd /path/to/chiaki-python
+# Clone the repository with submodules
+git clone --recursive https://github.com/YOUR_USERNAME/chiaki-python.git
+cd chiaki-python
 
-# The library (libchiaki.so) should be in the project root
-# It's built from chiaki-ng with the python_wrapper.c extension
+# Or if already cloned, initialize submodules
+git submodule update --init --recursive
+
+# Build the library
+./build.sh
 ```
 
 ## Configuration
@@ -173,8 +177,9 @@ PS          = 1 << 15
 ```
 chiaki-python/
 ├── build.sh                # Build script
-├── chiaki-ng/              # Chiaki source code (AGPL-3.0)
-│   └── lib/src/python_wrapper.c  # Python wrapper extension
+├── chiaki-ng/              # Chiaki source (git submodule, AGPL-3.0)
+├── src/
+│   └── python_wrapper.c    # Python wrapper extension
 ├── chiaki_python/          # Python package
 │   ├── _chiaki.py          # ctypes bindings
 │   ├── config_parser.py    # Chiaki config reader
@@ -188,7 +193,7 @@ chiaki-python/
 │   ├── screenshot.py       # Screenshot capture example
 │   ├── stream.py           # Video streaming to ffplay
 │   └── stream_ps_button.py # Stream with PS button demo
-├── libchiaki.so            # Compiled Chiaki library with Python wrapper
+├── libchiaki.so            # Compiled library (after build)
 ├── LICENSE                 # AGPL-3.0 License
 └── README.md
 ```
@@ -247,6 +252,6 @@ This project is based on and includes code from:
 
 ### Modifications
 
-This project adds a Python wrapper (`chiaki-ng/lib/src/python_wrapper.c`) to the chiaki-ng library, exposing a simplified C API for Python bindings via ctypes.
+This project adds a Python wrapper (`src/python_wrapper.c`) that links with the chiaki-ng library, exposing a simplified C API for Python bindings via ctypes. The wrapper is kept separate from upstream chiaki-ng to allow easy updates.
 
 See the [LICENSE](LICENSE) file for the full license text.
